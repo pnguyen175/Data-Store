@@ -1,0 +1,148 @@
+swagger: '2.0'
+info:
+  description: This is a sample Warehouse server. It will store Company information and their orders
+
+  version: 1.0.0
+  title: Warehouse
+
+paths:
+  /info:
+    post:
+      summary: reports company info
+      operationId: app.companyInfo
+      description: Stores company data
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: reading
+        description: Company Information
+        schema:
+          $ref: '#/definitions/companyInfo'
+      responses: 
+        201:
+          description: company added
+        400:
+          description: invalid input, object invalid
+    get:
+      summary: gets company info
+      operationId: app.get_company_information
+      description: Stores company info
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: startDate
+        description: pass an optional search string for looking up the event
+        required: false
+        type: string
+        format: date-time
+      - in: query
+        name: endDate
+        description: pass an optional search string for looking up the event
+        required: false
+        type: string
+        format: date-time
+      responses:
+        200:
+          description: search results matches critieria
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/companyInfo'
+        400:
+          description: bad input parameter
+          
+  /order:
+    post:
+      summary: reports company order
+      operationId: app.companyOrder
+      description: Stores company order
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: reading
+        description: Company Order
+        schema:
+          $ref: '#/definitions/CompanyOrder'
+      responses:
+        201:
+          description: order added
+        400:
+          description: invalid input, object invalid
+    get:
+      summary: gets company order
+      operationId: app.get_company_order
+      description: Stores a companies order
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: startDate
+        description: pass an optional search string for looking up the event
+        required: false
+        type: string
+        format: date-time
+      - in: query
+        name: endDate
+        description: pass an optional search string for looking up the event
+        required: false
+        type: string
+        format: date-time
+      responses:
+        200:
+          description: search results matching criteria
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CompanyOrder'
+        400:
+          description: bad input parameter
+    
+definitions:
+  companyInfo:
+    type: object
+    required:
+    - company_name
+    - order_date
+    - order_date_complete
+    properties:
+      company_name:
+        type: string
+        example: LBS Log Building Supplies
+      order_date:
+        type: string
+        example: 04-Jan-19
+      order_date_complete:
+        type: string
+        example: 20-Jan-19
+
+  CompanyOrder:
+    type: object
+    required:
+    - company_name
+    - material
+    - quantity
+    - price
+    - status
+    properties:
+      company_name:
+        type: string
+        example: LBS Log Building Supplies
+      material:
+        type: string
+        example: Oak Wood
+      quantity:
+        type: integer
+        example: 100
+      price:
+        type: integer
+        example: 120
+      status:
+        type: string
+        example: Ongoing
